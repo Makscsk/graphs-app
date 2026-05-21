@@ -16,6 +16,6 @@
   pointer-events: all;
 
   &.selectable.hover {
-    background: lightgreen;
+    background: var(--primary-lighter);
   }
 }

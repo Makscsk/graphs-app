@@ -22,6 +22,7 @@ import useDataLoader from './hooks/useDataLoader'
 import isPlainObject from 'lodash/isPlainObject'
 import CustomChartLoader from './components/CustomChartLoader'
 import CustomChartWarnModal from './components/CustomChartWarnModal'
+import AnimatedBackground from './components/AnimatedBackground'
 import { FaAlignJustify } from 'react-icons/fa'
 
 function App() {
@@ -240,68 +241,71 @@ function App() {
   )
 
   return (
-    <div className="App">
-      <CustomChartWarnModal
-        toConfirmCustomChart={toConfirmCustomChart}
-        confirmCustomChartLoad={confirmCustomChartLoad}
-        abortCustomChartLoad={abortCustomChartLoad}
-      />
-      <div className="app-sections">
-        <Section title={`1. Загрузите данные`} loading={loading}>
-          <DataLoader {...dataLoader} hydrateFromProject={importProject} />
-        </Section>
-        {data && (
-          <Section title="2. Выберите диаграмму">
-            <CustomChartLoader
-              isOpen={isModalCustomChartOpen}
-              onClose={toggleModalCustomChart}
-              loadCustomChartsFromNpm={loadCustomChartsFromNpm}
-              loadCustomChartsFromUrl={loadCustomChartsFromUrl}
-              uploadCustomCharts={uploadCustomCharts}
-            />
-            <ChartSelector
-              onAddChartClick={toggleModalCustomChart}
-              onRemoveCustomChart={removeCustomChart}
-              availableCharts={charts}
-              currentChart={currentChart}
-              setCurrentChart={handleChartChange}
-            />
+    <>
+      <AnimatedBackground />
+      <div className="App">
+        <CustomChartWarnModal
+          toConfirmCustomChart={toConfirmCustomChart}
+          confirmCustomChartLoad={confirmCustomChartLoad}
+          abortCustomChartLoad={abortCustomChartLoad}
+        />
+        <div className="app-sections">
+          <Section title={`1. Загрузите данные`} loading={loading}>
+            <DataLoader {...dataLoader} hydrateFromProject={importProject} />
           </Section>
-        )}
-        {data && currentChart && (
-          <Section title={`3. Сопоставление`} loading={mappingLoading}>
-            <DataMapping
-              ref={dataMappingRef}
-              dimensions={currentChart.dimensions}
-              dataTypes={data.dataTypes}
-              mapping={mapping}
-              setMapping={setMapping}
-            />
-          </Section>
-        )}
-        {data && currentChart && (
-          <Section title="4. Настройка">
-            <ChartPreviewWithOptions
-              chart={currentChart}
-              dataset={data.dataset}
-              dataTypes={data.dataTypes}
-              mapping={mapping}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              setRawViz={setRawViz}
-              setMappingLoading={setMappingLoading}
-            />
-          </Section>
-        )}
-        {data && currentChart && rawViz && (
-          <Section title="5. Экспорт">
-            <Exporter rawViz={rawViz} exportProject={exportProject} />
-          </Section>
-        )}
-        <Footer />
+          {data && (
+            <Section title="2. Выберите диаграмму">
+              <CustomChartLoader
+                isOpen={isModalCustomChartOpen}
+                onClose={toggleModalCustomChart}
+                loadCustomChartsFromNpm={loadCustomChartsFromNpm}
+                loadCustomChartsFromUrl={loadCustomChartsFromUrl}
+                uploadCustomCharts={uploadCustomCharts}
+              />
+              <ChartSelector
+                onAddChartClick={toggleModalCustomChart}
+                onRemoveCustomChart={removeCustomChart}
+                availableCharts={charts}
+                currentChart={currentChart}
+                setCurrentChart={handleChartChange}
+              />
+            </Section>
+          )}
+          {data && currentChart && (
+            <Section title={`3. Сопоставление`} loading={mappingLoading}>
+              <DataMapping
+                ref={dataMappingRef}
+                dimensions={currentChart.dimensions}
+                dataTypes={data.dataTypes}
+                mapping={mapping}
+                setMapping={setMapping}
+              />
+            </Section>
+          )}
+          {data && currentChart && (
+            <Section title="4. Настройка">
+              <ChartPreviewWithOptions
+                chart={currentChart}
+                dataset={data.dataset}
+                dataTypes={data.dataTypes}
+                mapping={mapping}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                setRawViz={setRawViz}
+                setMappingLoading={setMappingLoading}
+              />
+            </Section>
+          )}
+          {data && currentChart && rawViz && (
+            <Section title="5. Экспорт">
+              <Exporter rawViz={rawViz} exportProject={exportProject} />
+            </Section>
+          )}
+          <Footer />
+        </div>
+        <ScreenSizeAlert />
       </div>
-      <ScreenSizeAlert />
-    </div>
+    </>
   )
 }
 
