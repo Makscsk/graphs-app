@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import classNames from 'classnames'
 import { Row, Col, Card, Dropdown } from 'react-bootstrap'
-import { BsLink, BsPlus } from 'react-icons/bs'
+import { BsLink, BsPlus, BsFillTrashFill } from 'react-icons/bs'
 import uniq from 'lodash/uniq'
 import styles from './ChartSelector.module.scss'
-import { BsFillTrashFill } from 'react-icons/bs'
 import { translateChartMetadata } from './chartMetadataTranslations'
 
 function filterCharts(charts, filter) {
@@ -25,9 +24,9 @@ function ChartSelector({
   const translatedCharts = useMemo(
     () => availableCharts.map(translateChartMetadata),
     [availableCharts]
-  );
+  )
 
-    const charts = useMemo(() => {
+  const charts = useMemo(() => {
     return filterCharts(translatedCharts, filter)
   }, [translatedCharts, filter])
 
@@ -35,7 +34,11 @@ function ChartSelector({
     (nextFilter) => {
       setFilter(nextFilter)
       const nextCharts = filterCharts(translatedCharts, nextFilter)
-      if (nextCharts.findIndex(c => c.metadata.id === currentChart.metadata.id) === -1) {
+      if (
+        nextCharts.findIndex(
+          (c) => c.metadata.id === currentChart.metadata.id
+        ) === -1
+      ) {
         setCurrentChart(nextCharts[0])
       }
     },
@@ -43,10 +46,11 @@ function ChartSelector({
   )
 
   const translatedCurrentChart = useMemo(
-    () => availableCharts.find(c => c.metadata.id === currentChart?.metadata.id),
+    () =>
+      availableCharts.find((c) => c.metadata.id === currentChart?.metadata.id),
     [availableCharts, currentChart]
-  );
-  const displayCurrentChart = translateChartMetadata(translatedCurrentChart);
+  )
+  const displayCurrentChart = translateChartMetadata(translatedCurrentChart)
 
   return (
     <>
@@ -81,15 +85,22 @@ function ChartSelector({
         <Col xs={3} className="pt-3">
           {displayCurrentChart && (
             <Card className={styles.currentChart}>
-              <Card.Img variant="top" src={displayCurrentChart.metadata.thumbnail} />
+              <Card.Img
+                variant="top"
+                src={displayCurrentChart.metadata.thumbnail}
+              />
               <Card.Body>
                 <Card.Title className="m-0">
                   <h2 className="m-0">{displayCurrentChart.metadata.name}</h2>
                 </Card.Title>
                 <Card.Subtitle className="m-0">
-                  <h4 className="mb-2">{displayCurrentChart.metadata.category}</h4>
+                  <h4 className="mb-2">
+                    {displayCurrentChart.metadata.category}
+                  </h4>
                 </Card.Subtitle>
-                <Card.Text>{displayCurrentChart.metadata.description}</Card.Text>
+                <Card.Text>
+                  {displayCurrentChart.metadata.description}
+                </Card.Text>
                 {/* ссылки и т.д. */}
               </Card.Body>
             </Card>
